@@ -8,12 +8,12 @@
 
 Add vue-kanban to your project with npm
 ``` bash
-npm install vue-kanban
+npm install https://github.com/the-provost/vue-kanban.git
 ```
 
 ... or yarn
 ```bash
-yarn add vue-kanban
+yarn add https://github.com/the-provost/vue-kanban.git
 ```
 
 ### Basic Usage
@@ -77,7 +77,7 @@ The component will emit an event when a block is moved
 ```
 
 ### Add some style
-I have included a scss stylesheet in this repo as a starting point that can be used in your project
+An scss stylesheet is included in this repo as a starting point that can be used in your project
 ```html
 <style lang="scss">
   @import './assets/kanban.scss';
