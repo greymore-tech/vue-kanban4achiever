@@ -11,8 +11,9 @@
         <ul class="drag-inner-list" ref="list" :data-status="stage">
           <li class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block.id" :key="block.id">
             <slot :name="block.id">
-              <strong>{{ block.status }}</strong>
-              <div>{{ block.id }}</div>
+              <strong>{{ block.title }}</strong>
+              <div>{{ block.desc }}</div>
+              <button class="btn-sm btn btn-danger fas fa-trash" @click="deleteTask(block)"></button>
             </slot>
           </li>
         </ul>
@@ -26,33 +27,16 @@
 
 <script>
   import dragula from 'dragula';
-  import { Machine } from 'xstate';
 
   export default {
     name: 'KanbanBoard',
 
     props: {
-      stages: {
-        type: Array,
-        required: true,
-      },
-      blocks: {
-        type: Array,
-        required: true,
-      },
-      config: {
-        type: Object,
-        default: () => ({}),
-      },
-      stateMachineConfig: {
-        type: Object,
-        default: null,
-      },
+      stages: {},
+      blocks: {},
     },
-
     data() {
       return {
-        machine: null,
       };
     },
 
@@ -66,52 +50,52 @@
       getBlocks(status) {
         return this.localBlocks.filter(block => block.status === status);
       },
-
-      findPossibleTransitions(sourceState) {
-        return this.machine.config.states[sourceState].on || {};
-      },
-
-      findTransition(target, source) {
-        const targetState = target.dataset.status;
-        const sourceState = source.dataset.status;
-        const possibleTransitions = this.findPossibleTransitions(sourceState);
-        return Object.keys(possibleTransitions)
-          .find(transition => possibleTransitions[transition] === targetState);
-      },
-
-      accepts(block, target, source) {
-        if (!this.machine) return true;
-        const targetState = target.dataset.status;
-        const sourceState = source.dataset.status;
-        return Object.values(this.findPossibleTransitions(sourceState)).includes(targetState);
-      },
+      
+      deleteTask(block){
+      	var self=this;
+      	//var status=0;
+      	if(confirm("Confirm Deletion of Task")){
+      		axios.post('api/deleteKanbanProject', {id:block.id, admin_id:block.admin_id})
+      		.then(function(response){
+      			let status=response.data;
+      			//console.log(status);
+      			if(status==200){
+      				toast.fire({
+              	type:'success',
+              	title:'Task Removed'
+            	});
+      			}
+      			else if(status==500){
+      				toast.fire({
+              	type:'error',
+              	title:'Operation Not Permitted'
+            	})
+      			}
+      			else{
+      				toast.fire({
+              	type:'error',
+              	title:'Task Not Found'
+            	})
+      			}
+      		});
+      	}
+      }
     },
 
-    updated() {
-      this.drake.containers = this.$refs.list;
-    },
-
-    mounted() {
-      this.config.accepts = this.config.accepts || this.accepts;
-      this.drake = dragula(this.$refs.list, this.config)
+  updated() {
+    this.drake.containers = this.$refs.list;
+  },
+  mounted() {
+    this.drake = dragula(this.$refs.list)
       .on('drag', (el) => {
         el.classList.add('is-moving');
       })
-      .on('drop', (block, list, source) => {
+      .on('drop', (block, list) => {
         let index = 0;
         for (index = 0; index < list.children.length; index += 1) {
           if (list.children[index].classList.contains('is-moving')) break;
         }
-
-        let newState = list.dataset.status;
-
-        if (this.machine) {
-          const transition = this.findTransition(list, source);
-          if (!transition) return;
-          newState = this.machine.transition(source.dataset.status, transition).value;
-        }
-
-        this.$emit('update-block', block.dataset.blockId, newState, index);
+        this.$emit('update-block', block.dataset.blockId, list.dataset.status, index);
       })
       .on('dragend', (el) => {
         el.classList.remove('is-moving');
@@ -123,11 +107,6 @@
           }, 600);
         }, 100);
       });
-    },
-
-    created() {
-      if (!this.stateMachineConfig) return;
-      this.machine = Machine(this.stateMachineConfig);
-    },
+  }
   };
 </script>
