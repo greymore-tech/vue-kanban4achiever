@@ -13,6 +13,8 @@
             <slot :name="block.id">
               <strong>{{ block.title }}</strong>
               <div>{{ block.desc }}</div>
+              <div>{{ block.name }}</div>
+              <div>{{ block.desig }}</div>
               <button class="btn-sm btn btn-danger fas fa-trash" @click="deleteTask(block)"></button>
             </slot>
           </li>
