@@ -15,6 +15,7 @@
               <div>{{ block.desc }}</div>
               <div>{{ block.name }}</div>
               <div>{{ block.desig }}</div>
+              <div>{{ block.percentage }}</div>
               <button class="btn-sm btn btn-danger fas fa-trash" @click="deleteTask(block)"></button>
             </slot>
           </li>
