@@ -15,7 +15,11 @@
               <div>{{ block.desc }}</div>
               <div>{{ block.name }}</div>
               <div>{{ block.desig }}</div>
+<<<<<<< HEAD
               <div><strong>{{ block.percentage }}%</strong></div>
+=======
+              <div>{{ block.percentage }}</div>
+>>>>>>> 7e388f9d121c9b9240f2a1f121ce5ab879130b16
               <button class="btn-sm btn btn-danger fas fa-trash" @click="deleteTask(block)"></button>
               <button class="btn-sm btn btn-primary fas fa-edit" @click="editModal(block)"></button>
             </slot>
