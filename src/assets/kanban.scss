@@ -1,5 +1,8 @@
 $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
-
+$on-hold: #FB7D44;
+  $in-progress: #2A92BF;
+  $needs-review: #F4CE46;
+  $approved: #00B961;
 ul.drag-list, ul.drag-inner-list {
     list-style-type: none;
     margin: 0;
@@ -37,6 +40,37 @@ ul.drag-list, ul.drag-inner-list {
         text-transform: uppercase;
         font-weight: 600;
     }
+    &-on-hold {
+      .drag-column-header,
+      .is-moved,
+      .drag-options {
+        background: $on-hold;
+      }
+    }
+
+    &-in-progress {
+      .drag-column-header,
+      .is-moved,
+      .drag-options {
+        background: $in-progress;
+      }
+    }
+
+    &-needs-review {
+      .drag-column-header,
+      .is-moved,
+      .drag-options{
+        background: $needs-review;
+      }
+    }
+
+    &-approved {
+      .drag-column-header,
+      .is-moved,
+      .drag-options {
+        background: $approved;
+      }
+    }
 }
 
 .drag-column-header {
@@ -54,7 +88,7 @@ ul.drag-list, ul.drag-inner-list {
 .drag-item {
     padding: 10px;
     margin: 10px;
-    height: 100px;
+    height: auto;
     background: rgba(black, 0.4);
     transition: $ease-out;
 
@@ -126,3 +160,4 @@ ul.drag-list, ul.drag-inner-list {
 .gu-transit {
   opacity: 0.2;
 }
+

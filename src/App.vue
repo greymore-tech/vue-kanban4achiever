@@ -6,7 +6,7 @@
         <a href="//codepen.io/ettrics/pen/QbPEeg">Codepen</a>
       </h4>
     </section>
-    <Kanban :stages="statuses" :blocks="blocks" @update-block="updateBlock">
+    <Kanban :stages="statuses" :blocks="blocks" @update-block="updateBlock" @change="changeBlock">
       <div v-for="stage in statuses" :slot="stage" :key="stage">
         <h2>
           {{ stage }}
@@ -65,6 +65,8 @@ export default {
         title: faker.company.bs(),
       });
     }, 500),
+    
+    changeBlock(){var self=this;console.log("fuck");self.$emit('change','change');},
   },
 };
 </script>

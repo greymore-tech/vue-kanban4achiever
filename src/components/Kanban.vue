@@ -13,7 +13,11 @@
             <slot :name="block.id">
               <strong>{{ block.title }}</strong>
               <div>{{ block.desc }}</div>
+              <div>{{ block.name }}</div>
+              <div>{{ block.desig }}</div>
+              <div><strong>{{ block.percentage }}%</strong></div>
               <button class="btn-sm btn btn-danger fas fa-trash" @click="deleteTask(block)"></button>
+              <button class="btn-sm btn btn-primary fas fa-edit" @click="editModal(block)"></button>
             </slot>
           </li>
         </ul>
@@ -22,6 +26,26 @@
         </div>
       </li>
     </ul>
+    <div class="modal fade" id="editTask" tabindex="-1" role="dialog" aria-labelledby="editTask" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          	<label>New Percentage:</label>
+          	<input type="number" min="0" max="100" v-model="percentage" placeholder="Enter New Percentage">
+          </div>
+          <div class="modal-footer">
+          	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" @click="changePercentage()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,6 +61,8 @@
     },
     data() {
       return {
+      	id: '',
+      	percentage: ''
       };
     },
 
@@ -51,6 +77,7 @@
         return this.localBlocks.filter(block => block.status === status);
       },
       
+      
       deleteTask(block){
       	var self=this;
       	//var status=0;
@@ -64,6 +91,7 @@
               	type:'success',
               	title:'Task Removed'
             	});
+            	self.change();
       			}
       			else if(status==500){
       				toast.fire({
@@ -79,7 +107,46 @@
       			}
       		});
       	}
+      },
+      
+      editModal(block){
+      	$('#editTask').modal('show');
+      	var self=this;
+      	self.id=block.id;
+      	self.percentage=block.percentage;
+      },
+      changePercentage(){
+      	var self=this;
+      	axios.post("api/updateKanbanProject",  {id: self.id, percentage: self.percentage})
+      		.then(function(response){
+      			let status=response.data;
+      			//console.log(status);
+      			if(status==200){
+      				toast.fire({
+              	type:'success',
+              	title:'Percentage Changed'
+            	});
+            	self.change();
+      			}
+      			else if(status==500){
+      				toast.fire({
+              	type:'error',
+              	title:'Operation Not Permitted'
+            	})
+      			}
+      			else{
+      				toast.fire({
+              	type:'error',
+              	title:'Task Not Found'
+            	})
+      			}
+      		});
+      },
+      change(){
+      	var self=this;
+        self.$emit('change','change');
       }
+      
     },
 
   updated() {
@@ -110,3 +177,4 @@
   }
   };
 </script>
+
