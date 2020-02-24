@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      statuses: ['on-hold', 'in-progress', 'needs-review', 'approved'],
+      statuses: ['bucket-list', 'in-progress', 'achieved', 'side-tracked','discarded'],
       blocks: [],
     };
   },
@@ -65,8 +65,8 @@ export default {
         title: faker.company.bs(),
       });
     }, 500),
-    
-    changeBlock(){var self=this;console.log("fuck");self.$emit('change','change');},
+
+    changeBlock(){var self=this;console.log("Hello!");self.$emit('change','change');},
   },
 };
 </script>
@@ -74,10 +74,11 @@ export default {
 <style lang="scss">
   @import './assets/kanban.scss';
 
-  $on-hold: #FB7D44;
-  $in-progress: #2A92BF;
-  $needs-review: #F4CE46;
-  $approved: #00B961;
+  $bucket-list: #FB7D44;
+  $in-progress: rgb(62, 171, 218);
+  $achieved: #F4CE46;
+  $side-tracked: #00B961;
+  $discarded: rgb(128, 2, 2);
 
   * {
     box-sizing: border-box;
@@ -111,11 +112,11 @@ export default {
         }
     }
 
-    &-on-hold {
+    &-bucket-list {
       .drag-column-header,
       .is-moved,
       .drag-options {
-        background: $on-hold;
+        background: $bucket-list;
       }
     }
 
@@ -127,19 +128,19 @@ export default {
       }
     }
 
-    &-needs-review {
+    &-achieved {
       .drag-column-header,
       .is-moved,
       .drag-options{
-        background: $needs-review;
+        background: $achieved;
       }
     }
 
-    &-approved {
+    &-side-tracked {
       .drag-column-header,
       .is-moved,
       .drag-options {
-        background: $approved;
+        background: $side-tracked;
       }
     }
   }

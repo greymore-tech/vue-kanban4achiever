@@ -1,8 +1,9 @@
 $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
-$on-hold: #FB7D44;
-  $in-progress: #2A92BF;
-  $needs-review: #F4CE46;
-  $approved: #00B961;
+$bucket-list: #FB7D44;
+  $in-progress: rgb(62, 171, 218);
+  $achieved: #F4CE46;
+  $side-tracked: #00B961;
+  $discarded: rgb(128, 2, 2);
 ul.drag-list, ul.drag-inner-list {
     list-style-type: none;
     margin: 0;
@@ -40,11 +41,11 @@ ul.drag-list, ul.drag-inner-list {
         text-transform: uppercase;
         font-weight: 600;
     }
-    &-on-hold {
+    &-bucket-list {
       .drag-column-header,
       .is-moved,
       .drag-options {
-        background: $on-hold;
+        background: $bucket-list;
       }
     }
 
@@ -56,19 +57,27 @@ ul.drag-list, ul.drag-inner-list {
       }
     }
 
-    &-needs-review {
+    &-achieved {
       .drag-column-header,
       .is-moved,
       .drag-options{
-        background: $needs-review;
+        background: $achieved;
       }
     }
 
-    &-approved {
+    &-side-tracked {
       .drag-column-header,
       .is-moved,
       .drag-options {
-        background: $approved;
+        background: $side-tracked;
+      }
+    }
+
+    &-discarded {
+      .drag-column-header,
+      .is-moved,
+      .drag-options {
+        background: $discarded;
       }
     }
 }
